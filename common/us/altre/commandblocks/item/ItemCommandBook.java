@@ -109,7 +109,7 @@ public class ItemCommandBook extends Item implements ICommandSender {
 			return true;
 		}
 
-		return super.onItemUse(itemStack, entityPlayer, world, x, y, z, sideHit, hitVecX, hitVecY, hitVecZ);
+		return false;
 	}
 
 	private void runCommand(World world, EntityPlayer player) {
