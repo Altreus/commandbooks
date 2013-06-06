@@ -86,8 +86,10 @@ public class ItemCommandBook extends Item implements ICommandSender {
 		
 		// If we right-click on a command block, yoink the command.
 		// Currently this only gets called with shift+right-click
-		if (world.getBlockId(x, y, z) == Block.commandBlock.blockID) {
-			TileEntityCommandBlock c = (TileEntityCommandBlock) world.getBlockTileEntity(x, y, z);
+		if (world.getBlockId(x, y, z) == Block.commandBlock.blockID
+				&& actualBook.itemID == Item.writableBook.itemID) {
+			TileEntityCommandBlock c = (TileEntityCommandBlock) world
+					.getBlockTileEntity(x, y, z);
 			command = c.getCommand();
 			commandSenderName = c.getCommandSenderName();
 			FMLLog.log(Level.INFO, "Set command: %s", command);
