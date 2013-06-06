@@ -1,0 +1,11 @@
+[{
+	"modid": "Voidchests",
+	"name": "Void Chests",
+	"description": "An inventory that deletes items from the world",
+	"version": "0.01",
+	"url": "https://github.com/Altreus/voidchests",
+	"authorList": [
+		"Altreus"
+	],
+	"credits":"Idea by rycuda; skillz thanks to Pahimar"
+}]
