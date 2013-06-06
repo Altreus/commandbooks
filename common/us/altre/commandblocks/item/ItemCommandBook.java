@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -100,9 +101,11 @@ public class ItemCommandBook extends Item implements ICommandSender {
 					.getBlockTileEntity(x, y, z);
 			command = c.getCommand();
 			commandSenderName = c.getCommandSenderName();
-			FMLLog.log(Level.INFO, "Set command: %s", command);
-			FMLLog.log(Level.INFO, "Set command sender: %s", commandSenderName);
-			
+			if (player instanceof EntityPlayerMP) {
+				((EntityPlayerMP) player).sendChatToPlayer("Command set: "
+						+ command);
+			}
+
 			return true;
 		}
 
