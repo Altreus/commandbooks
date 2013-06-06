@@ -33,7 +33,7 @@ public class ItemCommandBook extends Item implements ICommandSender {
 	public void setCommandSenderName(String str) {
 		commandSenderName = str;
 	}
-	
+
 	@Override
 	public String getCommandSenderName() {
 		// TODO Auto-generated method stub
@@ -45,13 +45,15 @@ public class ItemCommandBook extends Item implements ICommandSender {
 
 	@Override
 	public boolean canCommandSenderUseCommand(int i, String s) {
-		// I don't know what the parameters are, but this is what the command block does
+		// I don't know what the parameters are, but this is what the command
+		// block does
 		return i <= 2;
 	}
 
 	@Override
 	public String translateString(String s, Object... var2) {
-		// I don't know what the parameters are, but this is what the command block does
+		// I don't know what the parameters are, but this is what the command
+		// block does
 		return s;
 	}
 
@@ -86,12 +88,12 @@ public class ItemCommandBook extends Item implements ICommandSender {
 		}
 		return itemStack;
 	}
-	
+
 	@Override
-	public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, 
-			World world, int x, int y, int z, int sideHit, 
-			float hitVecX, float hitVecY, float hitVecZ) {
-		
+	public boolean onItemUse(ItemStack itemStack, EntityPlayer player,
+			World world, int x, int y, int z, int sideHit, float hitVecX,
+			float hitVecY, float hitVecZ) {
+
 		// If we right-click on a command block, yoink the command.
 		// Currently this only gets called with shift+right-click
 		if (world.getBlockId(x, y, z) == Block.commandBlock.blockID
@@ -113,21 +115,20 @@ public class ItemCommandBook extends Item implements ICommandSender {
 	}
 
 	private void runCommand(World world, EntityPlayer player) {
-		// If we're on the server, run the command. Not sure what to do about the return value of executeCommand
-        if (! world.isRemote && this.command != null)
-        {
-            MinecraftServer minecraftserver = MinecraftServer.getServer();
+		// If we're on the server, run the command. Not sure what to do about
+		// the return value of executeCommand
+		if (!world.isRemote && this.command != null) {
+			MinecraftServer minecraftserver = MinecraftServer.getServer();
 
-            if (minecraftserver != null && minecraftserver.isCommandBlockEnabled())
-            {
-    			FMLLog.log(Level.INFO, "Run command: %s", this.command);
-    			usingPlayer = player;
-    			commandSenderName = player.username;
-                ICommandManager icommandmanager = minecraftserver.getCommandManager();
-                int r = icommandmanager.executeCommand(this, this.command);
-                FMLLog.log(Level.INFO, "%d", r);
-            }
-        
-        }
+			if (minecraftserver != null
+					&& minecraftserver.isCommandBlockEnabled()) {
+				FMLLog.log(Level.INFO, "Run command: %s", this.command);
+				usingPlayer = player;
+				ICommandManager icommandmanager = minecraftserver
+						.getCommandManager();
+				int r = icommandmanager.executeCommand(this, this.command);
+				FMLLog.log(Level.INFO, "%d", r);
+			}
+		}
 	}
 }
