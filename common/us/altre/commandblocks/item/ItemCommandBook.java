@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.EnumGameType;
 import net.minecraft.world.World;
 
 public class ItemCommandBook extends ItemEditableBook implements ICommandSender {
@@ -64,12 +63,8 @@ public class ItemCommandBook extends ItemEditableBook implements ICommandSender 
 	}
 	
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-		// TODO: Don't do this in creative mode; this is when the user wants to actually write the book
-		
+	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {		
 		runCommand(world, player);
-		
-		player.displayGUIBook(itemStack);
 		return itemStack;
 	}
 	
