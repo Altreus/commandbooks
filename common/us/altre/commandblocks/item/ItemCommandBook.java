@@ -22,6 +22,8 @@ public class ItemCommandBook extends Item implements ICommandSender {
 
 	protected ItemStack actualBook;
 
+	protected boolean usingOnCommandBlock = false;
+
 	public ItemCommandBook(int id) {
 		super(id);
 		actualBook = new ItemStack(Item.writableBook);
@@ -56,18 +58,23 @@ public class ItemCommandBook extends Item implements ICommandSender {
 	public ChunkCoordinates getPlayerCoordinates() {
 		FMLLog.log(Level.INFO, "%s", "Get player location");
 		if (usingPlayer == null) {
-			return new ChunkCoordinates(0,0,0);
+			return new ChunkCoordinates(0, 0, 0);
 		}
-		
+
 		ChunkCoordinates c = usingPlayer.getPlayerCoordinates();
 		FMLLog.log(Level.INFO, "Player: %d, %d, %d", c.posX, c.posY, c.posZ);
-		
+
 		return usingPlayer.getPlayerCoordinates();
 	}
-	
+
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStack, World world,
 			EntityPlayer player) {
+		if (usingOnCommandBlock) {
+			usingOnCommandBlock = false;
+			return itemStack;
+		}
+
 		// On the client, show the book GUI. On the server, run the command, but
 		// only if it's a signed book.
 		if (world.isRemote) {
@@ -88,6 +95,7 @@ public class ItemCommandBook extends Item implements ICommandSender {
 		// Currently this only gets called with shift+right-click
 		if (world.getBlockId(x, y, z) == Block.commandBlock.blockID
 				&& actualBook.itemID == Item.writableBook.itemID) {
+			usingOnCommandBlock = true;
 			TileEntityCommandBlock c = (TileEntityCommandBlock) world
 					.getBlockTileEntity(x, y, z);
 			command = c.getCommand();
