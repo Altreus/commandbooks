@@ -7,21 +7,24 @@ import net.minecraft.block.Block;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemEditableBook;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
-public class ItemCommandBook extends ItemEditableBook implements ICommandSender {
+public class ItemCommandBook extends Item implements ICommandSender {
 
 	protected String command;
 	protected String commandSenderName = "@";
 	protected EntityPlayer usingPlayer;
-	
+
+	protected ItemStack actualBook;
+
 	public ItemCommandBook(int id) {
 		super(id);
+		actualBook = new ItemStack(Item.writableBook);
 	}
 
 	public void setCommandSenderName(String str) {
@@ -63,8 +66,16 @@ public class ItemCommandBook extends ItemEditableBook implements ICommandSender 
 	}
 	
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {		
-		runCommand(world, player);
+	public ItemStack onItemRightClick(ItemStack itemStack, World world,
+			EntityPlayer player) {
+		// On the client, show the book GUI. On the server, run the command, but
+		// only if it's a signed book.
+		if (world.isRemote) {
+			player.displayGUIBook(actualBook);
+		}
+		else if (actualBook.itemID == Item.writtenBook.itemID) {
+			runCommand(world, player);
+		}
 		return itemStack;
 	}
 	
